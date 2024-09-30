@@ -1,0 +1,51 @@
+﻿@model IEnumerable<Product>
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2>Product List</h2>
+        <a asp-action="Create" class="btn btn-primary">Create New Product</a>
+    </div>
+
+    <table class="table table-striped">
+        <thead class="thead-dark">
+            <tr>
+                <th>Product ID</th>
+                <th>Product Name</th>
+                <th>Category ID</th>
+                <th>Category Name</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.ProductId</td>
+                    <td>@item.ProductName</td>
+                    <td>@item.CategoryId</td>
+                    <td>@item.Category.CategoryName</td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.ProductId" class="btn btn-primary btn-sm">Edit</a>
+                        <a asp-action="Delete" asp-route-id="@item.ProductId" class="btn btn-danger btn-sm">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <div class="d-flex justify-content-end">
+        <nav aria-label="Product Pagination">
+            <ul class="pagination">
+                @if (ViewBag.TotalCount > ViewBag.PageSize)
+                {
+                    for (int i = 1; i <= Math.Ceiling((double)ViewBag.TotalCount / ViewBag.PageSize); i++)
+                    {
+                        <li class="page-item @(i == ViewBag.CurrentPage ? "active" : "")">
+                            <a class="page-link" href="@Url.Action("Index", new { page = i, pageSize = ViewBag.PageSize })">@i</a>
+                        </li>
+                    }
+                }
+            </ul>
+        </nav>
+    </div>
+</div>
